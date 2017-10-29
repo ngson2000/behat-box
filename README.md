@@ -38,4 +38,4 @@ The behat tests can run on Firefox or Google Chrome browsers. Just set the optio
 
 ## Licence ##
 
-* GPL 2.0
+* GPL v3.0
