@@ -40,11 +40,8 @@ echo "ok"
 #=========================================================
 echo "Install google chrome..."
 #=========================================================
-dpkg -l google-chrome-stable > /dev/null 2>&1
-if [ $? -ne 0 -a -f /vagrant/upload/google-chrome-stable_current_amd64.deb ]; then
-	sudo dpkg -i /vagrant/upload/google-chrome-stable_current_amd64.deb
-	sudo apt-get install -y -f
-fi
+sudo dpkg -i /vagrant/upload/google-chrome-stable_current_amd64.deb
+sudo apt-get install -y -f
 echo "ok"
 
 #=========================================================

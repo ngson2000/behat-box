@@ -38,6 +38,16 @@ echo "ok"
 #=========================================================
 echo -n "Start X on login..."
 #=========================================================
+grep -q "cd /vagrant" .profile
+if [ $? -ne 0 ]; then
+    echo "cd /vagrant" >> .profile
+fi
+# Add firefox binary path into $PATH
+grep -q "firefox" .profile
+if [ $? -ne 0 ]; then
+    echo "PATH=\$HOME/bin/firefox:\$PATH" >> .profile
+fi
+
 grep -q "startx" .profile
 if [ $? -ne 0 ]; then
     PROFILE_STRING=$(cat <<EOF
@@ -47,10 +57,6 @@ fi
 EOF
 )
     echo "${PROFILE_STRING}" >> .profile
-fi
-grep -q "cd /vagrant" .profile
-if [ $? -ne 0 ]; then
-    echo "cd /vagrant" >> .profile
 fi
 echo "ok"
 
@@ -62,10 +68,10 @@ TMUX_SCRIPT=$(cat <<EOF
 tmux start-server
 
 tmux new-session -d -s selenium
-tmux send-keys -t selenium:0 './bin/chromedriver' C-m
+tmux send-keys -t selenium:0 '~/bin/chromedriver' C-m
 
 tmux new-session -d -s chrome-driver
-tmux send-keys -t chrome-driver:0 'java -jar ./bin/selenium-server-standalone.jar' C-m
+tmux send-keys -t chrome-driver:0 'java -jar ~/bin/selenium-server-standalone.jar' C-m
 EOF
 )
 echo "${TMUX_SCRIPT}"
@@ -91,6 +97,14 @@ echo "ok"
 echo -n "Add host alias..."
 #=========================================================
 echo "192.168.33.1 host" >> /etc/hosts
+echo "ok"
+
+#=========================================================
+echo -n "Reset the behat environment..."
+#=========================================================
+if [ -f /home/vagrant/.behatisready ]; then
+	rm -f /home/vagrant/.behatisready
+fi
 echo "ok"
 
 #=========================================================
